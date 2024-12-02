@@ -1,0 +1,95 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Vector;
+
+class Word {
+    private String english;
+    private String korean;
+
+    public Word(String english, String korean) {
+        this.english = english;
+        this.korean = korean;
+    }
+
+    public String getEnglish() {
+        return english;
+    }
+
+    public String getKorean() {
+        return korean;
+    }
+
+    public boolean match(String answer) {
+        return answer.equalsIgnoreCase(english);
+    }
+}
+
+public class WordTest {
+    private Vector<Word> wordList;
+    private Scanner scanner;
+
+    public WordTest() {
+        wordList = new Vector<>();
+        scanner = new Scanner(System.in);
+        initializeWords(); 
+    }
+
+    private void initializeWords() {
+        wordList.add(new Word("apple", "사과"));
+        wordList.add(new Word("banana", "바나나"));
+        wordList.add(new Word("pear", "배"));
+        wordList.add(new Word("cat", "고양이"));
+        wordList.add(new Word("dog", "개"));
+    }
+
+    private void addWord() {
+        System.out.print("추가할 영어 단어: ");
+        String english = scanner.next();
+        System.out.print("추가할 한글 뜻: ");
+        String korean = scanner.next();
+        wordList.add(new Word(english, korean));
+        System.out.println("단어가 추가되었습니다.");
+    }
+
+    private void startGame() {
+        System.out.println("게임을 시작합니다. 중단하려면 '그만'을 입력하세요.");
+        for (Word word : wordList) {
+            System.out.print(word.getKorean() + "에 해당하는 영어 단어는? ");
+            String answer = scanner.next();
+            if (answer.equals("그만")) {
+                System.out.println("게임을 종료합니다.");
+                break;
+            }
+            if (word.match(answer)) {
+                System.out.println("정답입니다!");
+            } else {
+                System.out.println("오답입니다. 정답은 " + word.getEnglish() + "입니다.");
+            }
+        }
+    }
+
+    public void run() {
+        while (true) {
+            System.out.print("1. 단어 추가  2. 게임 시작  3. 종료: ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    addWord();
+                    break;
+                case 2:
+                    startGame();
+                    break;
+                case 3:
+                    System.out.println("안녕히 가세요! ");
+                    return;
+                default:
+                    System.out.println("잘못된 입력입니다.");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        WordTest game = new WordTest();
+        game.run();
+    }
+}
